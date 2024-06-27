@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1608cf1-c4cb-4862-b425-b15bf06cf679" name="Changes" comment="Initial commit">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/glzd/expenseTrackerApp/business/services/ExpenseTypeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/glzd/expenseTrackerApp/business/services/ExpenseTypeService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/error.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/error.html" afterDir="false" />
-    </list>
+    <list default="true" id="a1608cf1-c4cb-4862-b425-b15bf06cf679" name="Changes" comment="Initial commit" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,7 +43,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.ExpenseTrackerApplication.executor": "Run",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -108,7 +104,7 @@
       <workItem from="1719417985662" duration="5350000" />
       <workItem from="1719467541103" duration="115000" />
       <workItem from="1719467666946" duration="2034000" />
-      <workItem from="1719469709636" duration="1350000" />
+      <workItem from="1719469709636" duration="1660000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit">
       <option name="closed" value="true" />

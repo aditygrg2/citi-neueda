@@ -17,6 +17,6 @@ public class MoneyFormatter implements Formatter<BigDecimal> {
     @Override
     public String print(BigDecimal object, Locale locale) {
 
-        return object.toPlainString() + " ₼";
+        return object.toPlainString() + " ₹";
     }
 }
