@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Expenses</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+        body {
+            font-family: 'Arial';
+        }
+        .navbar-brand img {
+            width: 45px; /* Adjust size as needed */
+            margin-right: 10px; /* Add some space between the image and text */
+        }
+        .navbar {
+            margin-right: 12px;
+            margin-top: 10px;
+            margin-left: 12px;
+            border: 0;
+            border-radius: 10px;
+            background-image: linear-gradient(174.2deg, rgba(173, 216, 230, 1) 7.1%, rgba(240, 255, 255, 1) 67.4%);
+            padding: 10px;
+        }
+
+        body {
+            background-color: #2d2d2d;
+        }
+
+        #container {
+            display: flex;
+            overflow: hidden; /* Prevent table from overflowing outside the container */
+            margin-top: 5px;
+            height: 660px;
+        }
+
+        .left-column {
+            flex: 0.8;
+            border: 0; /* Set a border for the container */
+            border-radius: 10px;
+            background-image: linear-gradient(174.2deg, rgba(173, 216, 230, 1) 7.1%, rgba(240, 255, 255, 1) 67.4%);
+            padding: 10px;
+            margin-top: 5px;
+        }
+
+        .right-column {
+            flex: 1.5;
+            border: 0; /* Set a border for the container */
+            border-radius: 10px;
+            background-image: linear-gradient(174.2deg, rgba(173, 216, 230, 1) 7.1%, rgba(240, 255, 255, 1) 67.4%);
+            padding: 10px;
+            margin-top: 5px;
+        }
+
+        .center-column {
+            flex: 4;
+            margin-right: 5px;
+            margin-left: 5px;
+            overflow-y: auto;
+            border: 0;
+            border-radius: 10px;
+            background-image: linear-gradient(174.2deg, rgba(173, 216, 230, 1) 7.1%, rgba(240, 255, 255, 1) 67.4%);
+            margin-top: 5px;
+        }
+
+        table {
+            box-sizing: content-box;
+            width: 100%;
+        }
+
+        .total-expense {
+            margin-right: 30px;
+            text-align: right;
+        }
+
+        .tableHead {
+            text-align: center;
+        }
+
+        .ui-datepicker-calendar {
+            display: none;
+        }
+
+        .btn-sm {
+            width: 160px; /* Set the desired width */
+            height: 40px; /* Set the desired height */
+            font-size: 14px; /* Set the font size */
+        }
+
+        .container-sm h4 {
+            text-align: center;
+        }
+
+        .table-test {
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+
+        .btn-add-new {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 320px; /* Set the desired width */
+            height: 30px; /* Set the desired height */
+            font-size: 12px; /* Set the font size */
+        }
+
+        .btn-shadow {
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+        }
+
+        .form-rounded {
+            border-radius: 10px;
+        }
+
+        .cancel-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .newExpenseContent {
+            height: 350px;
+            width: 400px;
+            background-image: linear-gradient(174.2deg, rgba(173, 216, 230, 1) 7.1%, rgba(240, 255, 255, 1) 67.4%);
+            border: 0;
+            border-radius: 20px;
+            padding: 20px;
+            font-size: 16px;
+        }
+
+        .add-category-column {
+            flex: 1.5;
+            border: 0; /* Set a border for the container */
+            border-radius: 10px;
+            background-image: linear-gradient(174.2deg, rgba(173, 216, 230, 1) 7.1%, rgba(240, 255, 255, 1) 67.4%);
+            padding: 10px;
+            margin-top: 5px;
+        }
+
+        .pagination .page-link {
+            border-radius: 10px;
+            color: #000000;
+            margin-top: 15px;
+        }
+
+        .pagination .page-item.active .page-link {
+            border-radius: 10px;
+            background-color: #000000;
+            border-color: #000000;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .pagenav-and-download {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .btn-download {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class="body">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" style="color: #232526" th:href="@{/expenses}">
+            <img src="https://cdn0.iconfinder.com/data/icons/miscellaneous-344-solid/128/expense_expenditure_cost_business-plan_budget_rate_spending_money-bag_amount_investment-1024.png" alt="Expense Tracker Icon">
+            <a class="navbar-brand" style="color: #232526" th:href="@{/expenses}">Expense Tracker</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/expenses}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/addExpense}">Add Expense</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/categories}">Filter Expense</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/reports}">Total Expenses</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-dark" type="submit">Search</button>
+                </form>
+            </div>
+    </div>
+</nav>
+
+<div class="container-fluid" id="container">
+    <div class="left-column">
+        <div class="container-sm">
+            <div><br></div>
+            <h3>Filter Expense<img width="25" height="25" src="https://img.icons8.com/ios-filled/50/filter--v1.png" alt="filter--v1"/></h3>
+            <div class="mb-3">
+                <form th:action="@{/expenses/filter}" method="get">
+                    <label class="form-label" for="year">Select Year:</label>
+                    <input class="form-control form-control-sm form-rounded" type="number" min="1900" max="2099" step="1" id="year" name="year" value="2023">
+                    <div><p></p></div>
+                    <label class="form-label" for="month">Select Month:</label>
+                    <select class="form-select form-select-sm form-rounded" id="month" name="month">
+                        <option selected value="">Select the month</option>
+                        <option th:each="month : ${T(java.time.Month).values()}"
+                                th:value="${month}"
+                                th:text="${T(com.glzd.expenseTrackerApp.web.helpers.Helpers).toSentenceCase(month.toString())}"></option>
+                    </select>
+                    <br>
+
+                    <label class="form-label" for="expenseTypeFilter">Type of expense:</label>
+                    <select class="form-select form-select-sm form-rounded" id="expenseTypeFilter" name="expenseTypeFilter">
+                        <option selected value="">Choose the type of expense </option>
+                        <option th:each="expenseType : ${expenseTypes}" th:value="${expenseType.expenseCategory}" th:text="${expenseType.expenseCategory}">
+                    </select>
+                    <br>
+
+                    <button type="submit" class="btn btn-outline-dark btn-sm btn-shadow">Filter</button>
+                </form>
+            </div>
+
+            <div class="mb-3">
+                <form th:action="@{/expenses}" method="get">
+                    <button type="submit" class="btn btn-outline-dark btn-sm btn-shadow">Show all</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="center-column">
+        <div>&nbsp</div>
+        <div class="total-expense">
+            <h5 style="font-weight: bold">Total Expenses: [[${totalAmount}]]</h5>
+        </div>
+        <div><br></div>
+        <div class="container-sm" th:if="${expenses.isEmpty()}">
+            <h4>No expenses found</h4>
+        </div>
+        <div class="table-test">
+            <div class="container-sm" th:unless="${expenses.isEmpty()}">
+                <h3 class="tableHead" th:text="(${year} != null and ${month} != null) ? 'Expenses in ' + ${month} + ' ' + ${year} : 'All expenses'">Expenses</h3>
+                <table class="table table-hover" id="data-table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name of expense</th>
+                        <th scope="col">Type of expense</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Update</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="expense : ${expenses}">
+                        <td th:text="${expense.name}"></td>
+                        <td th:text="${expense.expenseType}"></td>
+                        <td th:text="${expense.amount}"></td>
+                        <td th:text="${expense.date}"></td>
+                        <td>
+                            <!-- Button to open the update modal with Thymeleaf attributes -->
+                            <a th:href="@{/update/{id}(id=${expense.id})}">
+                                <img width="25" height="25" src="https://img.icons8.com/ios-glyphs/30/edit--v1.png" alt="edit--v1"/>
+                            </a>
+                        </td>
+                        <td>
+                            <form th:action="@{/expenses/delete/individual/{id}(id=${expense.id})}" th:method="post">
+                                <input width="25" height="25" type="image" src="https://img.icons8.com/ios-glyphs/30/filled-trash.png" alt="filled-trash" />
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="pagenav-and-download">
+                    <div class="page-nav">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item"><a class="page-link" th:if="${expenses.number > 0}" th:href="@{/expenses(page=${expenses.number - 1})}">Previous</a></li>
+                                <!-- Show first page number -->
+                                <li th:if="${expenses.number >= 1}" class="page-item"><a class="page-link" th:href="@{/expenses(page=0)}">1</a></li>
+                                <li th:if="${expenses.number < 1}" class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                </li>
+                                <!-- Show ellipsis if current page is greater than 3 -->
+                                <li th:if="${expenses.number >= 3}"><span class="page-link">...</span></li>
+                                <!-- Show two pages before the current page -->
+                                <li th:if="${expenses.number >= 2}" class="page-item"><a class="page-link" th:href="@{/expenses(page=${expenses.number - 1})}" th:text="${expenses.number}"></a></li>
+                                <!-- Show the current page number -->
+                                <li class="page-item active"><span class="page-link" th:text="${expenses.number + 1}"></span></li>
+                                <!-- Show two pages after the current page -->
+                                <li th:if="${expenses.number < expenses.totalPages - 1}" class="page-item"><a class="page-link" th:href="@{/expenses(page=${expenses.number + 1})}" th:text="${expenses.number + 2}"></a></li>
+                                <!-- Show ellipsis if current page is less than (totalPages - 3) -->
+                                <li th:if="${expenses.number < expenses.totalPages - 3}"><span class="page-link">...</span></li>
+                                <!-- Show last page number -->
+                                <li th:if="${expenses.number < expenses.totalPages - 2}" class="page-item"><a class="page-link" th:href="@{/expenses(page=${expenses.totalPages - 1})}" th:text="${expenses.totalPages}"></a></li>
+                                <li th:if="${expenses.number > expenses.totalPages - 2}" class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" th:if="${expenses.number < expenses.totalPages - 1}" th:href="@{/expenses(page=${expenses.number + 1})}">Next</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div>
+                        <a th:href="@{/downloadExpenses}" class="btn btn-outline-dark btn-shadow btn-download">
+                            <img width="20" height="20" src="https://img.icons8.com/metro/26/download.png" alt="download"/>
+                            Download as CSV
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-column">
+        <div><br></div>
+        <!-- Sidebar content -->
+        <div class="container-sm">
+            <h3 class="tableHead">Add expense below:</h3>
+
+            <form th:action="@{/AddExpense}" th:method="post" th:object="${expense}" novalidate>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name of expense</label>
+                    <input type="text" id="name" class="form-control form-rounded" th:field="*{name}" th:errorclass="is-invalid" aria-describedby="nameHelp">
+                    <div id="validationName" class="invalid-feedback" th:errors="*{name}"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="expenseType">Type of expense</label>
+                    <select class="form-select form-rounded" id="expenseType" th:field="*{expenseType}" th:errorclass="is-invalid">
+                        <option selected value="">Choose the type of expense</option>
+                        <option th:each="expenseType : ${expenseTypes}" th:value="${expenseType.expenseCategory}" th:text="${expenseType.expenseCategory}"></option>
+                    </select>
+                    <div id="validationExpenseType" class="invalid-feedback" th:errors="*{expenseType}">Please select the expense types.</div>
+                </div>
+                <div class="mb-3">
+                    <a th:href="@{/newExpenseType}" class="btn btn-outline-dark btn-add-new btn-shadow">Customize your types of expense</a>
+                </div>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount</label>
+                    <input type="number" class="form-control form-rounded" id="amount" th:field="*{amount}" th:errorclass="is-invalid">
+                    <div id="validationAmount" class="invalid-feedback" th:errors="*{amount}"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date of expense</label>
+                    <input type="date" class="form-control form-rounded" id="date" th:field="*{date}" th:errorclass="is-invalid">
+                    <div id="validationDate" class="invalid-feedback" th:errors="*{date}"></div>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-outline-dark btn-sm btn-shadow">
+                    <img width="25" height="25" src="https://img.icons8.com/metro/26/plus-2-math.png" alt="plus-2-math"/>
+                    Add expense
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXlK27aUMj/Xo8lVCsA5tRNFqO8sAsgW6I4ujxVNU5ilB02u5ib9MQQx5f3M" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGcurlrQ3SO5KHngIroCmqDIDdGxlQ/z6pmaq3Y+5YhZITC1og4+WT8Kr6" crossorigin="anonymous"></script>
+</body>
+</html>
