@@ -87,6 +87,11 @@ public class ExpenseController {
         return "/newExpenseType";
     }
 
+    @GetMapping("/profile")
+    public String getProfile(){
+        return "/profile";
+    }
+
     @PostMapping("/newExpenseType")
     public String addExpenseType(@Valid ExpenseType expenseType, Errors errors, Model model){
         // Checking for validation errors
