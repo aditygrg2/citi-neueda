@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+<!--    <link rel="stylesheet" href="styles.css">-->
+    <style>
+        body {
+            font-family: 'Poppins';
+        }
+        .navbar-brand img {
+            width: 30px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body class="body">
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" style="color: #ffffff" href="index.html">
+            <img src="/images/unnamed.png" alt="Expense Tracker Icon">
+            Expense Tracker
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/add-expense}">Add Expense</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/reports}">Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/categories}">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/splitwise}">Split Money</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/profile}" style="position: absolute; right: 60px;">
+                        <img src="/images/notification-1614268-1368970.png" alt="Notification" width="25" height="25">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/profile}" style="position: absolute; right: 10px;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile" width="30" height="30">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container mt-5">
+    <div class="total-expense">
+        <h5 style="font-weight: bold">Total Expenses: [[${{totalAmount}}]]</h5>
+    </div>
+    <div class="table-test">
+        <div class="container-sm" th:if="${expenses.isEmpty()}">
+            <h4>No expenses found</h4>
+        </div>
+        <div class="container-sm" th:unless="${expenses.isEmpty()}">
+            <h3 class="tableHead" th:text="(${year} != null and ${month} != null) ? 'Expenses in ' + ${month} + ' ' + ${year} : 'All expenses'">Expenses</h3>
+            <table class="table table-hover" id="data-table">
+                <thead>
+                <tr>
+                    <th scope="col">Name of expense</th>
+                    <th scope="col">Type of expense</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="expense : ${expenses}">
+                    <td th:text="${expense.name}"></td>
+                    <td th:text="${expense.expenseType}"></td>
+                    <td th:text="${{expense.amount}}"></td>
+                    <td th:text="${expense.date}"></td>
+                    <td>
+                        <a th:href="@{/update/{id}(id=${expense.id})}">
+                            <img width="25" height="25" src="https://img.icons8.com/ios-glyphs/30/edit--v1.png" alt="edit--v1"/>
+                        </a>
+                    </td>
+                    <td>
+                        <form th:action="@{/expenses/delete/individual/{id}(id=${expense.id})}" th:method="post">
+                            <input width="25" height="25" type="image" src="https://img.icons8.com/ios-glyphs/30/filled-trash.png" alt="filled-trash"/>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="pagenav-and-download">
+                <div class="page-nav">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" th:if="${expenses.number > 0}" th:href="@{/expenses(page=${expenses.number - 1})}">Previous</a></li>
+                            <li th:if="${expenses.number >= 1}" class="page-item"><a class="page-link" th:href="@{/expenses(page=0)}">1</a></li>
+                            <li th:if="${expenses.number < 1}" class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                            <li th:if="${expenses.number >= 3}"><span class="page-link">...</span></li>
+                            <li th:if="${expenses.number >= 2}" class="page-item"><a class="page-link" th:href="@{/expenses(page=${expenses.number - 1})}" th:text="${expenses.number}"></a></li>
+                            <li class="page-item active"><span class="page-link" th:text="${expenses.number + 1}"></span></li>
+                            <li th:if="${expenses.number < expenses.totalPages - 1}" class="page-item"><a class="page-link" th:href="@{/expenses(page=${expenses.number + 1})}" th:text="${expenses.number + 2}"></a></li>
+                            <li th:if="${expenses.number < expenses.totalPages - 3}"><span class="page-link">...</span></li>
+                            <li th:if="${expenses.number < expenses.totalPages - 2}" class="page-item"><a class="page-link" th:href="@{/expenses(page=${expenses.totalPages - 1})}" th:text="${expenses.totalPages}"></a></li>
+                            <li th:if="${expenses.number > expenses.totalPages - 2}" class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+                            </li>
+                            <li class="page-item"><a class="page-link" th:if="${expenses.number < expenses.totalPages - 1}" th:href="@{/expenses(page=${expenses.number + 1})}">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div>
+                    <a th:href="@{/downloadExpenses}" class="btn btn-outline-dark btn-shadow btn-download">
+                        <img width="20" height="20" src="https://img.icons8.com/metro/26/download.png" alt="download"/>
+                        Download as CSV
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

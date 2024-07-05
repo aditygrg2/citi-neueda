@@ -52,6 +52,21 @@ public class ExpenseController {
         return "/expenses";
     }
 
+    @GetMapping("/reports")
+    public String showReports(){
+        return "/reports";
+    }
+
+    @GetMapping("/categories")
+    public String showCategories(){
+        return "/categories";
+    }
+
+    @GetMapping("/add-expense")
+    public String showExpense(){
+        return "/add-expense";
+    }
+
     @ModelAttribute("expenseTypes")
     public Iterable<ExpenseType> getExpenseTypes() {
         return expenseTypeService.findAll();

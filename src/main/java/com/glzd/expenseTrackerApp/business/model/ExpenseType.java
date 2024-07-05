@@ -20,6 +20,4 @@ public class ExpenseType {
     @NotEmpty(message = "Please specify the type of expense")
     @Column(unique = true)
     private String expenseCategory;
-
-
 }
